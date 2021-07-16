@@ -1,5 +1,6 @@
 package com.aye10032.util;
 
+import com.aye10032.data.URL;
 import com.aye10032.pojo.VideoInfo;
 import okhttp3.*;
 
@@ -16,7 +17,11 @@ import java.util.Date;
  */
 public class PostUtil {
 
-    public static void addVideo(String url, boolean needtrans, Long fromqq, String description) throws IOException {
+    public static void addVideo(String url, boolean needtrans, Long fromqq, String description) {
+        addVideo(URL.default_host, url, needtrans, fromqq, description);
+    }
+
+    public static void addVideo(String api_host, String url, boolean needtrans, Long fromqq, String description) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
 
@@ -37,12 +42,41 @@ public class PostUtil {
         RequestBody body = RequestBody.create(mediaType, JSONUtil.entity2json(videoInfo));
 
         Request request = new Request.Builder()
-                .url("http://localhost:4869/addVideo")
+                .url("http://" + api_host + "/addVideo")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Response response = client.newCall(request).execute();
-        System.out.println(response.body().string());
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateVideo(VideoInfo videoInfo) {
+        updateVideo(URL.default_host, videoInfo);
+    }
+
+    public static void updateVideo(String api_host, VideoInfo videoInfo) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+
+        MediaType mediaType = MediaType.parse("application/json");
+
+        RequestBody body = RequestBody.create(mediaType, JSONUtil.entity2json(videoInfo));
+
+        Request request = new Request.Builder()
+                .url("http://" + api_host + "/updateVideo")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
