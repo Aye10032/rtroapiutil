@@ -40,3 +40,7 @@ Step 2. Add the dependency
 	    <version>Tag</version>
 	</dependency>
 ```
+
+## 相关文档
+
+![API文档](https://javadoc.jitpack.io/com/github/Aye10032/rtroapiutil/1.2/javadoc/)
